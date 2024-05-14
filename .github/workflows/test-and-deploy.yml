@@ -7,6 +7,7 @@ name: Test & Deploy
 on:
   push:
     branches:
+      - main
       - kan-10-yaml
 
 jobs:
@@ -14,6 +15,8 @@ jobs:
     name: set-up-environment
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
       - name: Install make
         run: sudo apt install make -y
       - name: Install application requirements
