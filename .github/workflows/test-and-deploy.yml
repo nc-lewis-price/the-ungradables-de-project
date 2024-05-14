@@ -10,6 +10,15 @@ on:
       - main
 
 jobs:
-  run-tests:
-    name: run-test
+  set-up-environment:
+    name: set-up-environment
     runs-on: ubuntu-latest
+    steps:
+      - name: Install make
+        run: sudo apt install make -y
+      - name: Install application requirements
+        run: make requirements
+      - name: Install Dev tools
+        run: make install-dev-tools
+      - name: Run checks
+        run: make run-checks
