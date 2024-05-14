@@ -1,3 +1,7 @@
 *tfstate*
 *.terraform*
 users.json
+/venv
+**/*pycache*
+.coverage
+
