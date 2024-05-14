@@ -22,6 +22,9 @@ create-environment:
 requirements: create-environment
 	source venv/bin/activate && $(PIP) install -r ./requirements.txt
 
+# ~~~~~ Install code quality tools ~~~~~
+install-dev-tools:
+	source venv/bin/activate && $(PIP) install bandit safety flake8 coverage pytest
 
 # ~~~~~ Run unit tests ~~~~~
 unit-test:
