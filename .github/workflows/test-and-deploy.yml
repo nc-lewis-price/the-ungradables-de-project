@@ -7,7 +7,7 @@ name: Test & Deploy
 on:
   push:
     branches:
-      - main
+      - kan-10-yaml
 
 jobs:
   set-up-environment:
