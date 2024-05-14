@@ -1,0 +1,15 @@
+# run make commands for tests etc.
+# update s3 bucket for terraform state
+# run terraform updates
+
+name: Test & Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-tests:
+    name: run-test
+    runs-on: ubuntu-latest
