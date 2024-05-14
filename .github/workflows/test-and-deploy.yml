@@ -1,0 +1,60 @@
+# run make commands for tests etc.
+# update s3 bucket for terraform state
+# run terraform updates
+
+name: Test & Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - kan-10-yaml
+
+jobs:
+  set-up-environment:
+    name: set-up-environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Install make
+        run: sudo apt install make -y
+      - name: Install application requirements
+        run: make requirements
+      - name: Install Dev tools
+        run: make install-dev-tools
+      - name: Run checks
+        run: make run-checks
+  update-terraform-state:
+    name: update-terraform-state
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        working-directory: ./setup_terraform
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+        working-directory: ./setup_terraform
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+        working-directory: ./setup_terraform
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -refresh-only
+        working-directory: ./setup_terraform
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -no-color -refresh-only
+        working-directory: ./setup_terraform
