@@ -31,27 +31,30 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with: 
-          sparse-checkout: 'setup_terraform'
       - uses: hashicorp/setup-terraform@v3
 
       - name: Terraform fmt
         id: fmt
         run: terraform fmt -check
+        working-directory: ./setup_terraform
         continue-on-error: true
 
       - name: Terraform Init
         id: init
         run: terraform init
+        working-directory: ./setup_terraform
 
       - name: Terraform Validate
         id: validate
         run: terraform validate -no-color
+        working-directory: ./setup_terraform
 
       - name: Terraform Plan
         id: plan
         run: terraform plan -no-color -refresh-only
+        working-directory: ./setup_terraform
 
       - name: Terraform Apply
         id: apply
         run: terraform apply -no-color -refresh-only
+        working-directory: ./setup_terraform
