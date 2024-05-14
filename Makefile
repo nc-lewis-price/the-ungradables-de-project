@@ -25,7 +25,7 @@ requirements: create-environment
 
 # ~~~~~ Install code quality tools ~~~~~
 install-dev-tools:
-	source venv/bin/activate && $(PIP) install bandit safety flake8
+	source venv/bin/activate && $(PIP) install bandit safety flake8 coverage
 
 # ~~~~~ Run unit tests ~~~~~
 unit-test:
@@ -39,6 +39,9 @@ security-checks:
 check-pep8-compliance:
 	source venv/bin/activate && flake8 src test
 
+check-test-coverage:
+	source venv/bin/activate && PYTHONPATH=$(PYTHONPATH) coverage run -m pytest && coverage report
+
 # Run unit tests, security checks and code compliance checks
-run-checks: unit-test security-checks check-pep8-compliance
+run-checks: unit-test security-checks check-pep8-compliance check-test-coverage
 
