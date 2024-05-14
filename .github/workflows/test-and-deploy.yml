@@ -25,3 +25,34 @@ jobs:
         run: make install-dev-tools
       - name: Run checks
         run: make run-checks
+  update-terraform-state:
+    name: update-terraform-state
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with: 
+          sparse-checkout: |
+            setup_terraform
+      - uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -no-color -refresh-only
+
+      - name: Terraform Apply
+        id: apply
+        run: terraform apply -no-color -refresh-only
